@@ -1,11 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Button from "@material-ui/core/Button";
-import Album from "./Album";
+import App from './components/App/App.js';
 
-ReactDOM.render(
-    <div>
-        <Album />
-    </div>, 
-    document.querySelector("#app")
-);
+ReactDOM.render(<App />, document.getElementById('app'));
