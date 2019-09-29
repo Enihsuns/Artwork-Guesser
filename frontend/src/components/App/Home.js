@@ -12,19 +12,6 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import ArtAppBar from '../Common/ArtAppBar'
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -57,85 +44,134 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+/* View */
 
-export default function GameList() {
+function Banner() {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
 
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <ArtAppBar />
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Container maxWidth="sm">
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Artwork Guesser
+    <div className={classes.heroContent}>
+      <Container maxWidth="sm">
+        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+          Artwork Guesser
             </Typography>
-            <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              How Well Do You Know Art History?
+        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+          How Well Do You Know Art History?
             </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
+        <div className={classes.heroButtons}>
+          <Grid container spacing={2} justify="center">
+            <Grid item>
+              <Button variant="contained" color="primary">
+                Main call to action
                   </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Secondary action
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" color="primary">
+                Secondary action
                   </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </Container>
-        </div>
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map(card => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      Play
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+            </Grid>
           </Grid>
-        </Container>
-      </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
-    </React.Fragment>
+        </div>
+      </Container>
+    </div>
   );
 }
+
+function GameList(props) {
+  const classes = useStyles();
+  const games = props.data;
+
+  return (
+    <Container className={classes.cardGrid} maxWidth="md">
+      <Grid container spacing={4}>
+        {games.map(game => (
+          <Grid item key={game.id} xs={12} sm={6} md={4}>
+            <Card className={classes.card}>
+              <CardMedia
+                className={classes.cardMedia}
+                image={game.coverUrl}
+                title="Image title"
+              />
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {game.title}
+                    </Typography>
+                <Typography>
+                  This is a media card. You can use this section to describe the content.
+                    </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" color="primary">
+                  Play
+                    </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
+}
+
+function Footer() {
+  const classes = useStyles();
+
+  return (
+    <footer className={classes.footer}>
+      <Typography variant="h6" align="center" gutterBottom>
+        Footer
+        </Typography>
+      <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+        Something here to give the footer a purpose!
+        </Typography>
+      <Copyright />
+    </footer>
+  );
+}
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+class Home extends React.Component {
+  state = {
+    isLoading: true,
+    games: []
+  };
+
+  componentDidMount() {
+    this.initFetch();
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <ArtAppBar />
+        <main>
+          <Banner />
+          {this.state.isLoading ? null : <GameList data={this.state.games} />}
+        </main>
+        <Footer />
+      </React.Fragment>
+    );
+  }
+
+  /* Data */
+  initFetch = () => {
+    fetch('/home')
+      .then(response => response.json())
+      .then(body => this.setState({ games: body, isLoading: false }))
+  }
+}
+
+export default Home;
