@@ -6,18 +6,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.util.Date;
 
 @Data
 @Entity
-public class Game {
+public class Play {
+
     @Id
     @GeneratedValue
     private Long id;
 
-    private String name;
-    private String description;
-    private String coverUrl;
+    private Date time;
+    private Integer score;
 
     @OneToOne
-    private User createUser;
+    private Game game;
+
+    @OneToOne
+    private User user;
 }
