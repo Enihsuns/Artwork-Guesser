@@ -129,6 +129,17 @@ function Footer() {
   );
 }
 
+/**function popup() {
+  
+  return (
+    <Popup trigger = {<button>show score</button> }>
+      content = "score"
+      on = click
+    </Popup>
+
+  )
+} **/
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -162,6 +173,7 @@ class Home extends React.Component {
           {this.state.isLoading ? null : <GameList data={this.state.games} />}
         </main>
         <Footer />
+        <popup />
       </React.Fragment>
     );
   }
