@@ -21,12 +21,12 @@ public class User {
     /**
      * All the game plays played by the user.
      */
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Play> plays;
 
     /**
      * All the games created by the user.
      */
-    @OneToMany
+    @OneToMany(mappedBy = "createUser")
     private List<Game> createdGames;
 }

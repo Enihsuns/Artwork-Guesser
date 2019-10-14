@@ -35,7 +35,7 @@ public class Game {
     /**
      * Game plays that had been played by users.
      */
-    @OneToMany
+    @OneToMany(mappedBy = "game")
     private List<Play> plays;
 
     /**

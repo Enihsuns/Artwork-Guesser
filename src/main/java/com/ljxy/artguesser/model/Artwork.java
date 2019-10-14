@@ -4,6 +4,7 @@ package com.ljxy.artguesser.model;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
@@ -71,6 +72,6 @@ public class Artwork {
     /**
      * Games which contain this artwork.
      */
-    @ManyToMany(mappedBy="artworks")
+    @ManyToMany(mappedBy = "artworks", fetch = FetchType.LAZY)
     private Set<Game> games = new HashSet<>();
 }
