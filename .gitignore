@@ -37,4 +37,4 @@ build/
 /src/main/resources/*.yml
 
 ### Log ###
-/log/*.log
+/log/
