@@ -29,3 +29,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Library ###
+/lib/
+
+### Configurations ###
+/src/main/resources/*.yml
+
+### Log ###
+/log/

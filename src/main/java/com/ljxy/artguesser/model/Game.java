@@ -1,25 +1,47 @@
 package com.ljxy.artguesser.model;
 
+import lombok.Data;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@Entity
 public class Game {
-    private final long id;
-    private final String title;
-    private final String coverUrl;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    public Game(long id, String title, String coverUrl) {
-        this.id = id;
-        this.title = title;
-        this.coverUrl = coverUrl;
-    }
+    private String title;
+    private String description;
+    private String coverUrl;
 
-    public long getId() {
-        return id;
-    }
+    /**
+     * The user who create this game.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User createUser;
 
-    public String getTitle() {
-        return title;
-    }
+    /**
+     * Artworks to be guessed in each round.
+     */
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    private List<Artwork> artworks;
 
-    public String getCoverUrl() {
-        return coverUrl;
+    /**
+     * Game plays that had been played by users.
+     */
+    @OneToMany
+    private List<Play> plays;
+
+    /**
+     * Init.
+     */
+    public Game() {
+        artworks = new ArrayList<>();
     }
 }
