@@ -2,10 +2,7 @@ package com.ljxy.artguesser.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -16,12 +13,13 @@ public class Play {
     @GeneratedValue
     private Long id;
 
-    private Date time;
+    private Date startTime;
+    private Date endTime;
     private Integer score;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Game game;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }
