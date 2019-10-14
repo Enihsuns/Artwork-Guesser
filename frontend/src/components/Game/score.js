@@ -1,6 +1,5 @@
 import React from "react";
 import { render } from "react-dom";
-import { makeStyles } from '@material-ui/core/styles';
 import Modal from "react-responsive-modal";
 import Button from '@material-ui/core/Button';
 
@@ -37,6 +36,7 @@ export default class Score extends React.Component {
             <Modal open={open} onClose={this.onCloseModal}>
             <h2>Score</h2>
             <p>Score is .........</p>
+            <Button variant="outlined">next</Button>
             </Modal>
         </div>
         );
