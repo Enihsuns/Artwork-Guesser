@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import ArtAppBar from '../Common/ArtAppBar';
+import Score from './score'
 
 const useStyles = makeStyles(theme => ({
 	mainArtwork: {
@@ -108,9 +109,10 @@ export default function Game() {
 							className={classes.slider}
 						/>
 					</Container>
-					<Button variant="outlined" className={classes.confirmButton}>
+					{/* <Button variant="outlined" className={classes.confirmButton}>
 						Guess
-          </Button>
+					</Button> */}
+					<Score />
 				</main>
 			</Container>
 			{/* Footer */}
@@ -127,5 +129,6 @@ export default function Game() {
 			</footer>
 			{/* End footer */}
 		</React.Fragment>
+		
 	);
 }
