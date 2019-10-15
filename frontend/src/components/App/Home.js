@@ -80,6 +80,7 @@ function Banner() {
 function GameList(props) {
   const classes = useStyles();
   const games = props.data;
+  const handlePlayClick = props.handlePlayClick;
 
   return (
     <Container className={classes.cardGrid} maxWidth="md">
@@ -95,15 +96,15 @@ function GameList(props) {
               <CardContent className={classes.cardContent}>
                 <Typography gutterBottom variant="h5" component="h2">
                   {game.title}
-                    </Typography>
+                </Typography>
                 <Typography>
-                  This is a media card. You can use this section to describe the content.
-                    </Typography>
+                  {game.description}
+                </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={handlePlayClick}>
                   Play
-                    </Button>
+                </Button>
               </CardActions>
             </Card>
           </Grid>
@@ -154,10 +155,16 @@ function Copyright() {
 }
 
 class Home extends React.Component {
-  state = {
-    isLoading: true,
-    games: []
-  };
+  constructor (props){
+    super(props);
+  
+    this.state = {
+      isLoading: true,
+      games: []
+    };
+
+    this.handlePlayClick = this.handlePlayClick.bind(this);
+  }
 
   componentDidMount() {
     this.initFetch();
@@ -170,7 +177,7 @@ class Home extends React.Component {
         <ArtAppBar />
         <main>
           <Banner />
-          {this.state.isLoading ? null : <GameList data={this.state.games} />}
+          {this.state.isLoading ? null : <GameList data={this.state.games} handlePlayClick={this.handlePlayClick}/>}
         </main>
         <Footer />
         <popup />
@@ -180,9 +187,15 @@ class Home extends React.Component {
 
   /* Data */
   initFetch = () => {
-    fetch('/home')
+    fetch('/home/games')
       .then(response => response.json())
       .then(body => this.setState({ games: body, isLoading: false }))
+  }
+
+  /* Play Game Click */
+  handlePlayClick(game) {
+    const gamePath = 'game';
+    this.props.history.push(gamePath);
   }
 }
 
