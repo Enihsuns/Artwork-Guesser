@@ -1,5 +1,7 @@
 package com.ljxy.artguesser.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ public class Game {
      * The user who create this game.
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private User createUser;
 
     /**
@@ -30,18 +33,13 @@ public class Game {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    private List<Artwork> artworks;
+    @JsonManagedReference
+    private List<Artwork> artworks = new ArrayList<>();
 
     /**
      * Game plays that had been played by users.
      */
     @OneToMany(mappedBy = "game")
-    private List<Play> plays;
-
-    /**
-     * Init.
-     */
-    public Game() {
-        artworks = new ArrayList<>();
-    }
+    @JsonManagedReference
+    private List<Play> plays = new ArrayList<>();
 }

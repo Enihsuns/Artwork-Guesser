@@ -1,6 +1,7 @@
 package com.ljxy.artguesser.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -73,5 +74,6 @@ public class Artwork {
      * Games which contain this artwork.
      */
     @ManyToMany(mappedBy = "artworks", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Game> games = new HashSet<>();
 }

@@ -1,11 +1,13 @@
 package com.ljxy.artguesser.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,11 +24,13 @@ public class User {
      * All the game plays played by the user.
      */
     @OneToMany(mappedBy = "user")
-    private List<Play> plays;
+    @JsonManagedReference
+    private List<Play> plays = new ArrayList<>();
 
     /**
      * All the games created by the user.
      */
     @OneToMany(mappedBy = "createUser")
-    private List<Game> createdGames;
+    @JsonManagedReference
+    private List<Game> createdGames = new ArrayList<>();
 }
