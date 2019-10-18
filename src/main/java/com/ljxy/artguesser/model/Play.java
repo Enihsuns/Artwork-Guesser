@@ -1,5 +1,6 @@
 package com.ljxy.artguesser.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,8 +19,10 @@ public class Play {
     private Integer score;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Game game;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private User user;
 }
