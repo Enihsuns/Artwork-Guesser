@@ -23,4 +23,10 @@ public class GameServiceImpl implements GameService{
     public List<Game> listGame() {
         return gameRepository.findAll();
     }
+
+    @Transactional
+    @Override
+    public Game getGame(Long id) {
+        return gameRepository.findById(id).orElse(null);
+    }
 }

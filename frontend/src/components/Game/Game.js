@@ -2,13 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Slider from '@material-ui/core/Slider';
-import Button from '@material-ui/core/Button';
+import Footer from '../Common/Footer';
 import ArtAppBar from '../Common/ArtAppBar';
-import Score from './score'
+import Score from './Score'
 
 const useStyles = makeStyles(theme => ({
 	mainArtwork: {
@@ -47,11 +45,6 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 	},
-	footer: {
-		backgroundColor: theme.palette.background.paper,
-		marginTop: theme.spacing(8),
-		padding: theme.spacing(6, 0),
-	},
 }));
 
 const marks = [
@@ -69,66 +62,51 @@ const marks = [
 	},
 ];
 
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://material-ui.com/">
-				Your Website
-      </Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 function valuetext(value) {
 	return `${value}°C`;
 }
 
-export default function Game() {
+function GuessRect() {
 	const classes = useStyles();
-
+	
 	return (
-		<React.Fragment>
-			<CssBaseline />
-			<ArtAppBar />
-			<Container maxWidth="lg" paddingBottom='75%'>
-				<main>
-					<Box className={classes.mainArtwork} />
-					<Container className={classes.sliderContainer}>
-						<Slider
-							defaultValue={0}
-							getAriaValueText={valuetext}
-							aria-labelledby="discrete-slider-always"
-							min={-3000}
-							max={2019}
-							step={1}
-							marks={marks}
-							valueLabelDisplay="on"
-							className={classes.slider}
-						/>
-					</Container>
-					{/* <Button variant="outlined" className={classes.confirmButton}>
-						Guess
-					</Button> */}
-					<Score />
-				</main>
-			</Container>
-			{/* Footer */}
-			<footer className={classes.footer}>
-				<Container maxWidth="lg">
-					<Typography variant="h6" align="center" gutterBottom>
-						Footer
-          </Typography>
-					<Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-						Something here to give the footer a purpose!
-          </Typography>
-					<Copyright />
+		<Container maxWidth="lg" paddingBottom='75%'>
+			<main>
+				<Box className={classes.mainArtwork} />
+				<Container className={classes.sliderContainer}>
+					<Slider
+						defaultValue={0}
+						getAriaValueText={valuetext}
+						aria-labelledby="discrete-slider-always"
+						min={-3000}
+						max={2019}
+						step={1}
+						marks={marks}
+						valueLabelDisplay="on"
+						className={classes.slider}
+					/>
 				</Container>
-			</footer>
-			{/* End footer */}
-		</React.Fragment>
-		
+				<Score />
+			</main>
+		</Container>
 	);
 }
+
+class Game extends React.Component {
+	render() {
+		return (
+			<React.Fragment>
+				<CssBaseline />
+				<ArtAppBar />
+				<GuessRect />
+				<Footer />
+			</React.Fragment>
+		);
+	}
+
+	fetchArtwork() {
+		
+	}
+}
+
+export default Game;

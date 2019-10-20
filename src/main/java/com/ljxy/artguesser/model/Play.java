@@ -16,6 +16,7 @@ public class Play {
 
     private Date startTime;
     private Date endTime;
+    private Integer curRound;
     private Integer score;
 
     @ManyToOne(fetch = FetchType.LAZY)

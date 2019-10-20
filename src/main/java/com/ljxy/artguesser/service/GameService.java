@@ -7,4 +7,6 @@ import java.util.List;
 public interface GameService {
 
     List<Game> listGame();
+
+    Game getGame(Long id);
 }
