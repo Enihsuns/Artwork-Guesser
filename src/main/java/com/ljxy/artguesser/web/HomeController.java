@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ljxy.artguesser.util.Constants.DATA_KEY;
+
 @RestController
 public class HomeController {
 
@@ -37,7 +39,7 @@ public class HomeController {
             resultGameList.add(resultGame);
         }
 
-        result.put("data", resultGameList);
+        result.put(DATA_KEY, resultGameList);
         return result;
     }
 }

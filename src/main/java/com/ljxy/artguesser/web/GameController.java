@@ -53,8 +53,8 @@ public class GameController {
         }
 
         // Check whether gameId is valid and whether game contains any artwork.
-        Game game;
-        if((game = gameService.getGame(gameId)) == null || game.getArtworks().size() == 0) {
+        Game game = gameService.getGame(gameId);
+        if(game == null || game.getArtworks().size() == 0) {
             result.put("code", DATABASE_SEARCH_FAILED_CODE);
             result.put("msg", DATABASE_SEARCH_FAILED_MSG);
             return result;
@@ -71,5 +71,41 @@ public class GameController {
         // Success.
         result.put(CODE_KEY, SUCCESS_CODE);
         return result;
+    }
+
+    /**
+     * Get the artwork of the current round of the game.
+     * @param session The current http session.
+     * @return
+     */
+    @RequestMapping(value = "/game/artwork", method = RequestMethod.POST)
+    public Map<String, Object> artwork(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Check whether the session contains a Play model.
+        Object playObject = session.getAttribute(PLAY_SESSION_KEY);
+        Play play;
+        if(playObject instanceof Play) {
+            play = (Play)playObject;
+        }
+        else {
+            response.put(CODE_KEY, INVALID_PARAMS_CODE);
+            response.put(MSG_KEY, INVALID_PARAMS_MSG);
+            return response;
+        }
+
+        // Check whether complete all the rounds.
+        if(play.getCurRound() == play.getGame().getArtworks().size()) {
+            // TODO: complete all the rounds.
+            return response;
+        }
+
+        // Return the current artwork.
+        response.put(CODE_KEY, SUCCESS_CODE);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("artworkCoverUrl", play.getGame().getArtworks().get(play.getCurRound()).getCoverUrl());
+        response.put(DATA_KEY, data);
+        return response;
     }
 }

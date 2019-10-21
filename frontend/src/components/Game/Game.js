@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Slider from '@material-ui/core/Slider';
 import Footer from '../Common/Footer';
@@ -9,20 +9,15 @@ import ArtAppBar from '../Common/ArtAppBar';
 import Score from './Score'
 
 const useStyles = makeStyles(theme => ({
-	mainArtwork: {
+	artworkContainer: {
 		position: 'relative',
-		backgroundColor: theme.palette.grey[800],
-		color: theme.palette.common.white,
 		marginTop: 30,
 		bottom: 0,
-		width: '100%',
-		maxHeight: '100%',
-		paddingBottom: '75%',
-		backgroundImage: 'url(https://source.unsplash.com/user/erondu)',
-		backgroundSize: 'cover',
-		backgroundRepeat: 'no-repeat',
-		backgroundPosition: 'center',
 		zIndex: -1,
+	},
+	artwork: {
+		position: 'relative',
+		height: '75vh',
 	},
 	sliderContainer: {
 		position: 'relative',
@@ -66,13 +61,15 @@ function valuetext(value) {
 	return `${value}°C`;
 }
 
-function GuessRect() {
+function GuessRect(props) {
 	const classes = useStyles();
-	
+
 	return (
 		<Container maxWidth="lg" paddingBottom='75%'>
 			<main>
-				<Box className={classes.mainArtwork} />
+				<Grid container justify='center' className={classes.artworkContainer}>
+					<img className={classes.artwork} src={props.artworkCoverUrl}></img>
+				</Grid>
 				<Container className={classes.sliderContainer}>
 					<Slider
 						defaultValue={0}
@@ -93,19 +90,43 @@ function GuessRect() {
 }
 
 class Game extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isLoading: true,
+			artworkCoverUrl: "",
+		};
+	}
+
+	componentDidMount() {
+		this.fetchArtwork();
+	}
+
 	render() {
 		return (
 			<React.Fragment>
 				<CssBaseline />
 				<ArtAppBar />
-				<GuessRect />
+				{this.state.isLoading ? null : <GuessRect artworkCoverUrl={this.state.artworkCoverUrl} />}
 				<Footer />
 			</React.Fragment>
 		);
 	}
 
 	fetchArtwork() {
-		
+		fetch('/game/artwork', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			}
+		}).then(response => response.json())
+			.then(body => {
+				if (body.code == 0) {
+					this.setState({ isLoading: false, artworkCoverUrl: body.data.artworkCoverUrl });
+				}
+			});
 	}
 }
 
