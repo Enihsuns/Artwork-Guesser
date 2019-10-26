@@ -26,4 +26,12 @@ public class Play {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private User user;
+
+    /**
+     * Get the current round's artwork. Use this get method for convenience.
+     * @return Current round's artwork.
+     */
+    public Artwork getCurRoundArtwork() {
+        return game.getArtworks().get(curRound);
+    }
 }

@@ -64,6 +64,12 @@ function valuetext(value) {
 function GuessRect(props) {
 	const classes = useStyles();
 
+	const [guessTime, setGuessTime] = React.useState(0);
+
+	const onSliderChange = (event, newValue) => {
+		setGuessTime(newValue);
+	};
+
 	return (
 		<Container maxWidth="lg" paddingBottom='75%'>
 			<main>
@@ -72,7 +78,7 @@ function GuessRect(props) {
 				</Grid>
 				<Container className={classes.sliderContainer}>
 					<Slider
-						defaultValue={0}
+						value={guessTime}
 						getAriaValueText={valuetext}
 						aria-labelledby="discrete-slider-always"
 						min={-3000}
@@ -81,9 +87,10 @@ function GuessRect(props) {
 						marks={marks}
 						valueLabelDisplay="on"
 						className={classes.slider}
+						onChange={onSliderChange}
 					/>
 				</Container>
-				<Score />
+				<Score score={props.score} guessTime={guessTime} fetchScore={props.fetchScore}/>
 			</main>
 		</Container>
 	);
@@ -96,7 +103,11 @@ class Game extends React.Component {
 		this.state = {
 			isLoading: true,
 			artworkCoverUrl: "",
+			score: 0,
+			guessTime: 0,
 		};
+
+		this.fetchScore = this.fetchScore.bind(this);
 	}
 
 	componentDidMount() {
@@ -108,12 +119,21 @@ class Game extends React.Component {
 			<React.Fragment>
 				<CssBaseline />
 				<ArtAppBar />
-				{this.state.isLoading ? null : <GuessRect artworkCoverUrl={this.state.artworkCoverUrl} />}
+				{
+					this.state.isLoading ? null :
+					<GuessRect
+						artworkCoverUrl={this.state.artworkCoverUrl}
+						score={this.state.score}
+						fetchScore={this.fetchScore}
+						onSliderChange={this.onSliderChange}
+					/>
+				}
 				<Footer />
 			</React.Fragment>
 		);
 	}
 
+	/* Data */
 	fetchArtwork() {
 		fetch('/game/artwork', {
 			method: 'POST',
@@ -125,6 +145,24 @@ class Game extends React.Component {
 			.then(body => {
 				if (body.code == 0) {
 					this.setState({ isLoading: false, artworkCoverUrl: body.data.artworkCoverUrl });
+				}
+			});
+	}
+
+	fetchScore(guessTime) {
+		fetch('/game/score', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+      body: JSON.stringify({
+        guessTime: guessTime
+      })
+		}).then(response => response.json())
+			.then(body => {
+				if (body.code == 0) {
+					this.setState({ score: body.data.score });
 				}
 			});
 	}

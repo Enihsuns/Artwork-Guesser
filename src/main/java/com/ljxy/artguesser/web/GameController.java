@@ -21,6 +21,7 @@ public class GameController {
     private final GameService gameService;
 
     private static final String PLAY_SESSION_KEY = "play";
+    private static final String TIME_GAME_PLAY_KEY = "guessTime";
 
     @Autowired
     public GameController(GameService gameService) {
@@ -104,7 +105,39 @@ public class GameController {
         response.put(CODE_KEY, SUCCESS_CODE);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("artworkCoverUrl", play.getGame().getArtworks().get(play.getCurRound()).getCoverUrl());
+        data.put("artworkCoverUrl", play.getCurRoundArtwork().getCoverUrl());
+        response.put(DATA_KEY, data);
+        return response;
+    }
+
+    @RequestMapping(value = "/game/score", method = RequestMethod.POST)
+    public Map<String, Object> score(@RequestBody Map<String, Object> body, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Check whether the session contains a Play model.
+        Object playObject = session.getAttribute(PLAY_SESSION_KEY);
+        Play play;
+        if(playObject instanceof Play) {
+            play = (Play)playObject;
+        }
+        else {
+            response.put(CODE_KEY, INVALID_PARAMS_CODE);
+            response.put(MSG_KEY, INVALID_PARAMS_MSG);
+            return response;
+        }
+
+        // Calculate the score.
+        // TODO: The current version is only for testing frontend & backend.
+        int score = 0;
+        if(body.containsKey(TIME_GAME_PLAY_KEY)) {
+            // Time guess mode.
+            score = gameService.getScore(play.getCurRoundArtwork(), (Integer) body.get(TIME_GAME_PLAY_KEY));
+        }
+
+        response.put(CODE_KEY, SUCCESS_CODE);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("score", score);
         response.put(DATA_KEY, data);
         return response;
     }
