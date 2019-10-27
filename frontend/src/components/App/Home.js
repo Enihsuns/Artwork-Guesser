@@ -9,8 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import ArtAppBar from '../Common/ArtAppBar'
+import ArtAppBar from '../Common/ArtAppBar';
+import Footer from '../Common/Footer';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -102,7 +102,7 @@ function GameList(props) {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" color="primary" onClick={handlePlayClick}>
+                <Button size="small" color="primary" onClick={() => handlePlayClick(game)}>
                   Play
                 </Button>
               </CardActions>
@@ -111,46 +111,6 @@ function GameList(props) {
         ))}
       </Grid>
     </Container>
-  );
-}
-
-function Footer() {
-  const classes = useStyles();
-
-  return (
-    <footer className={classes.footer}>
-      <Typography variant="h6" align="center" gutterBottom>
-        Footer
-        </Typography>
-      <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-        Something here to give the footer a purpose!
-        </Typography>
-      <Copyright />
-    </footer>
-  );
-}
-
-/**function popup() {
-  
-  return (
-    <Popup trigger = {<button>show score</button> }>
-      content = "score"
-      on = click
-    </Popup>
-
-  )
-} **/
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
   );
 }
 
@@ -189,13 +149,27 @@ class Home extends React.Component {
   initFetch = () => {
     fetch('/home/games')
       .then(response => response.json())
-      .then(body => this.setState({ games: body, isLoading: false }))
+      .then(body => this.setState({ games: body.data, isLoading: false }));
   }
 
   /* Play Game Click */
   handlePlayClick(game) {
-    const gamePath = 'game';
-    this.props.history.push(gamePath);
+    fetch('/game/start', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        gameId: game.id,
+      })
+    }).then(response => response.json())
+      .then(body => {
+        if (body.code == 0) {
+          const gamePath = 'game';
+          this.props.history.push(gamePath);
+        }
+      });
   }
 }
 

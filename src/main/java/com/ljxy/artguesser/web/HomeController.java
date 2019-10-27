@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.ljxy.artguesser.util.Constants.DATA_KEY;
 
 @RestController
 public class HomeController {
@@ -19,7 +24,22 @@ public class HomeController {
     }
 
     @RequestMapping("/home/games")
-    public Collection<Game> games() {
-        return gameService.listGame();
+    public Map<String, Object> games() {
+        Map<String, Object> result = new HashMap<>();
+
+        List<Game> gameList = gameService.listGame();
+        List<Object> resultGameList = new ArrayList<>();
+        for(Game game: gameList) {
+            Map<String, Object> resultGame = new HashMap<>();
+            resultGame.put("id", game.getId());
+            resultGame.put("title", game.getTitle());
+            resultGame.put("description", game.getDescription());
+            resultGame.put("coverUrl", game.getCoverUrl());
+
+            resultGameList.add(resultGame);
+        }
+
+        result.put(DATA_KEY, resultGameList);
+        return result;
     }
 }

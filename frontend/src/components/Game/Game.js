@@ -1,30 +1,23 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Slider from '@material-ui/core/Slider';
-import Button from '@material-ui/core/Button';
+import Footer from '../Common/Footer';
 import ArtAppBar from '../Common/ArtAppBar';
-import Score from './score'
+import Score from './Score'
 
 const useStyles = makeStyles(theme => ({
-	mainArtwork: {
+	artworkContainer: {
 		position: 'relative',
-		backgroundColor: theme.palette.grey[800],
-		color: theme.palette.common.white,
 		marginTop: 30,
 		bottom: 0,
-		width: '100%',
-		maxHeight: '100%',
-		paddingBottom: '75%',
-		backgroundImage: 'url(https://source.unsplash.com/user/erondu)',
-		backgroundSize: 'cover',
-		backgroundRepeat: 'no-repeat',
-		backgroundPosition: 'center',
 		zIndex: -1,
+	},
+	artwork: {
+		position: 'relative',
+		height: '75vh',
 	},
 	sliderContainer: {
 		position: 'relative',
@@ -47,11 +40,6 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 	},
-	footer: {
-		backgroundColor: theme.palette.background.paper,
-		marginTop: theme.spacing(8),
-		padding: theme.spacing(6, 0),
-	},
 }));
 
 const marks = [
@@ -69,66 +57,91 @@ const marks = [
 	},
 ];
 
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://material-ui.com/">
-				Your Website
-      </Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 function valuetext(value) {
 	return `${value}°C`;
 }
 
-export default function Game() {
+function GuessRect(props) {
 	const classes = useStyles();
 
+	const [guessTime, setGuessTime] = React.useState(0);
+
+	const onSliderChange = (event, newValue) => {
+		setGuessTime(newValue);
+	};
+
 	return (
-		<React.Fragment>
-			<CssBaseline />
-			<ArtAppBar />
-			<Container maxWidth="lg" paddingBottom='75%'>
-				<main>
-					<Box className={classes.mainArtwork} />
-					<Container className={classes.sliderContainer}>
-						<Slider
-							defaultValue={0}
-							getAriaValueText={valuetext}
-							aria-labelledby="discrete-slider-always"
-							min={-3000}
-							max={2019}
-							step={1}
-							marks={marks}
-							valueLabelDisplay="on"
-							className={classes.slider}
-						/>
-					</Container>
-					{/* <Button variant="outlined" className={classes.confirmButton}>
-						Guess
-					</Button> */}
-					<Score />
-				</main>
-			</Container>
-			{/* Footer */}
-			<footer className={classes.footer}>
-				<Container maxWidth="lg">
-					<Typography variant="h6" align="center" gutterBottom>
-						Footer
-          </Typography>
-					<Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-						Something here to give the footer a purpose!
-          </Typography>
-					<Copyright />
+		<Container maxWidth="lg" paddingBottom='75%'>
+			<main>
+				<Grid container justify='center' className={classes.artworkContainer}>
+					<img className={classes.artwork} src={props.artworkCoverUrl}></img>
+				</Grid>
+				<Container className={classes.sliderContainer}>
+					<Slider
+						value={guessTime}
+						getAriaValueText={valuetext}
+						aria-labelledby="discrete-slider-always"
+						min={-3000}
+						max={2019}
+						step={1}
+						marks={marks}
+						valueLabelDisplay="on"
+						className={classes.slider}
+						onChange={onSliderChange}
+					/>
 				</Container>
-			</footer>
-			{/* End footer */}
-		</React.Fragment>
-		
+				<Score guessTime={guessTime}/>
+			</main>
+		</Container>
 	);
 }
+
+class Game extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isLoading: true,
+			artworkCoverUrl: "",
+			guessTime: 0,
+		};
+	}
+
+	componentDidMount() {
+		this.fetchArtwork();
+	}
+
+	render() {
+		return (
+			<React.Fragment>
+				<CssBaseline />
+				<ArtAppBar />
+				{
+					this.state.isLoading ? null :
+					<GuessRect
+						artworkCoverUrl={this.state.artworkCoverUrl}
+					/>
+				}
+				<Footer />
+			</React.Fragment>
+		);
+	}
+
+	/* Data */
+	fetchArtwork() {
+		fetch('/game/artwork', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			}
+		}).then(response => response.json())
+			.then(body => {
+				if (body.code == 0) {
+					this.setState({ isLoading: false, artworkCoverUrl: body.data.artworkCoverUrl });
+				}
+			});
+	}
+}
+
+export default Game;
