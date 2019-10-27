@@ -165,7 +165,7 @@ class Home extends React.Component {
       })
     }).then(response => response.json())
       .then(body => {
-        if (body.code == 0) {
+        if (body.code === 0) {
           const gamePath = 'game';
           this.props.history.push(gamePath);
         }

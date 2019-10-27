@@ -70,11 +70,15 @@ function GuessRect(props) {
 		setGuessTime(newValue);
 	};
 
+	const onDialogClose = () => {
+		props.fetchArtwork();
+	};
+
 	return (
 		<Container maxWidth="lg" paddingBottom='75%'>
 			<main>
 				<Grid container justify='center' className={classes.artworkContainer}>
-					<img className={classes.artwork} src={props.artworkCoverUrl}></img>
+					<img className={classes.artwork} alt="artwork" src={props.artworkCoverUrl}></img>
 				</Grid>
 				<Container className={classes.sliderContainer}>
 					<Slider
@@ -90,7 +94,7 @@ function GuessRect(props) {
 						onChange={onSliderChange}
 					/>
 				</Container>
-				<Score guessTime={guessTime}/>
+				<Score guessTime={guessTime} onDialogClose={onDialogClose}/>
 			</main>
 		</Container>
 	);
@@ -105,6 +109,8 @@ class Game extends React.Component {
 			artworkCoverUrl: "",
 			guessTime: 0,
 		};
+
+		this.fetchArtwork = this.fetchArtwork.bind(this);
 	}
 
 	componentDidMount() {
@@ -118,9 +124,10 @@ class Game extends React.Component {
 				<ArtAppBar />
 				{
 					this.state.isLoading ? null :
-					<GuessRect
-						artworkCoverUrl={this.state.artworkCoverUrl}
-					/>
+						<GuessRect
+							artworkCoverUrl={this.state.artworkCoverUrl}
+							fetchArtwork={this.fetchArtwork}
+						/>
 				}
 				<Footer />
 			</React.Fragment>
@@ -129,6 +136,8 @@ class Game extends React.Component {
 
 	/* Data */
 	fetchArtwork() {
+		this.setState({ isLoading: true });
+
 		fetch('/game/artwork', {
 			method: 'POST',
 			headers: {
@@ -137,7 +146,16 @@ class Game extends React.Component {
 			}
 		}).then(response => response.json())
 			.then(body => {
-				if (body.code == 0) {
+				if (body.code === 0) {
+					// Check if has completed all rounds.
+					if (body.data.isEnd) {
+						console.log("Yeah");
+						const resultPath = '/game/result';
+						this.props.history.push(resultPath);
+						return;
+					}
+
+					// Current artwork.
 					this.setState({ isLoading: false, artworkCoverUrl: body.data.artworkCoverUrl });
 				}
 			});

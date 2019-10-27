@@ -28,6 +28,15 @@ public class Play {
     private User user;
 
     /**
+     * Constructor.
+     */
+    public Play() {
+        curRound = 0;
+        score = 0;
+        startTime = new Date();
+    }
+
+    /**
      * Get the current round's artwork. Use this get method for convenience.
      * @return Current round's artwork.
      */

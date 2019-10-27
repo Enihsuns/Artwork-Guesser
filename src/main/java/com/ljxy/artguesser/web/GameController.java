@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,8 +65,6 @@ public class GameController {
         Play play = new Play();
         play.setGame(game);
         // TODO: play.setUser();
-        play.setCurRound(0);
-        play.setStartTime(new Date());
         session.setAttribute(PLAY_SESSION_KEY, play);
 
         // Success.
@@ -98,7 +95,11 @@ public class GameController {
 
         // Check whether complete all the rounds.
         if(play.getCurRound() == play.getGame().getArtworks().size()) {
-            // TODO: complete all the rounds.
+            response.put(CODE_KEY, SUCCESS_CODE);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("isEnd", true);
+            response.put(DATA_KEY, data);
             return response;
         }
 
@@ -137,6 +138,12 @@ public class GameController {
             score = gameService.getScore(artwork, guessTime);
         }
 
+        // Update the Play model in the session.
+        play.setCurRound(play.getCurRound() + 1);
+        play.setScore(play.getScore() + score);
+        session.setAttribute(PLAY_SESSION_KEY, play);
+
+        // Return data including score and other artwork information.
         response.put(CODE_KEY, SUCCESS_CODE);
 
         Map<String, Object> data = new HashMap<>();

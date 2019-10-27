@@ -64,7 +64,7 @@ export default function Score(props) {
       })
     }).then(response => response.json())
       .then(body => {
-        if (body.code == 0) {
+        if (body.code === 0) {
           setData(body.data);
         }
       });
@@ -78,6 +78,7 @@ export default function Score(props) {
 
   const handleClose = () => {
     setOpen(false);
+    props.onDialogClose();
   };
 
   /** UI */
@@ -128,7 +129,7 @@ export default function Score(props) {
               justify="flex-start"
               alignItems="flex-start"
               spacing={1}>
-              <Grid item xs>
+              <Grid item>
                 <Typography variant="h5" display="inline">{data.title} &nbsp;</Typography>
                 <Typography variant="h6" color="textSecondary" display="inline">
                   {data.objectDate}
@@ -140,7 +141,7 @@ export default function Score(props) {
                   {data.displayPosition}
                 </Typography>
               </Grid>
-              <Grid item xs>
+              <Grid item>
                 <div>
                   <Typography variant="body2" display="inline">Medium: &nbsp;</Typography>
                   <Typography variant="body2" display="inline" color="textSecondary">
