@@ -90,7 +90,7 @@ function GuessRect(props) {
 						onChange={onSliderChange}
 					/>
 				</Container>
-				<Score score={props.score} guessTime={guessTime} fetchScore={props.fetchScore}/>
+				<Score guessTime={guessTime}/>
 			</main>
 		</Container>
 	);
@@ -103,11 +103,8 @@ class Game extends React.Component {
 		this.state = {
 			isLoading: true,
 			artworkCoverUrl: "",
-			score: 0,
 			guessTime: 0,
 		};
-
-		this.fetchScore = this.fetchScore.bind(this);
 	}
 
 	componentDidMount() {
@@ -123,9 +120,6 @@ class Game extends React.Component {
 					this.state.isLoading ? null :
 					<GuessRect
 						artworkCoverUrl={this.state.artworkCoverUrl}
-						score={this.state.score}
-						fetchScore={this.fetchScore}
-						onSliderChange={this.onSliderChange}
 					/>
 				}
 				<Footer />
@@ -145,24 +139,6 @@ class Game extends React.Component {
 			.then(body => {
 				if (body.code == 0) {
 					this.setState({ isLoading: false, artworkCoverUrl: body.data.artworkCoverUrl });
-				}
-			});
-	}
-
-	fetchScore(guessTime) {
-		fetch('/game/score', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-      body: JSON.stringify({
-        guessTime: guessTime
-      })
-		}).then(response => response.json())
-			.then(body => {
-				if (body.code == 0) {
-					this.setState({ score: body.data.score });
 				}
 			});
 	}

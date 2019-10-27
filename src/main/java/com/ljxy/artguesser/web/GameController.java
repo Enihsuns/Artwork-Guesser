@@ -1,5 +1,6 @@
 package com.ljxy.artguesser.web;
 
+import com.ljxy.artguesser.model.Artwork;
 import com.ljxy.artguesser.model.Game;
 import com.ljxy.artguesser.model.Play;
 import com.ljxy.artguesser.service.GameService;
@@ -129,15 +130,28 @@ public class GameController {
         // Calculate the score.
         // TODO: The current version is only for testing frontend & backend.
         int score = 0;
+        int guessTime = (Integer)body.get(TIME_GAME_PLAY_KEY);
+        Artwork artwork = play.getCurRoundArtwork();
         if(body.containsKey(TIME_GAME_PLAY_KEY)) {
             // Time guess mode.
-            score = gameService.getScore(play.getCurRoundArtwork(), (Integer) body.get(TIME_GAME_PLAY_KEY));
+            score = gameService.getScore(artwork, guessTime);
         }
 
         response.put(CODE_KEY, SUCCESS_CODE);
 
         Map<String, Object> data = new HashMap<>();
         data.put("score", score);
+        data.put("guessTime", guessTime);
+        data.put("title", artwork.getTitle());
+        data.put("objectDate", artwork.getObjectDate());
+        data.put("objectBeginDate", artwork.getObjectBeginDate());
+        data.put("objectEndDate", artwork.getObjectEndDate());
+        data.put("displayPosition", artwork.getDisplayPosition());
+        data.put("medium", artwork.getMedium());
+        data.put("artist", artwork.getArtistDisplayName());
+        data.put("classification", artwork.getClassification());
+        data.put("linkResource", artwork.getLinkResource());
+        data.put("artworkCoverUrl", artwork.getCoverUrl());
         response.put(DATA_KEY, data);
         return response;
     }
