@@ -38,4 +38,19 @@ public class User {
     @OneToMany(mappedBy = "createUser")
     @JsonManagedReference
     private List<Game> createdGames = new ArrayList<>();
+
+    /**
+     * Public empty constructor.
+     */
+    public User() {}
+
+    /**
+     * Constructor.
+     * @param email Email.
+     * @param password Password.
+     */
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

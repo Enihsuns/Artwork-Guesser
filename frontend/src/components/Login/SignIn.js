@@ -113,7 +113,7 @@ export default function SignIn(props) {
 							autoComplete="current-password"
 							onChange={e => setPassword(e.target.value)}
 						/>
-						<FormHelperText className={classes.errorText} error>{errMsg}</FormHelperText>
+						<FormHelperText error>{errMsg}</FormHelperText>
 						<FormControlLabel
 							control={<Checkbox value="remember" color="primary" />}
 							label="Remember me"
