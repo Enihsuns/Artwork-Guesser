@@ -137,7 +137,15 @@ class Game extends React.Component {
 			}
 		}).then(response => response.json())
 			.then(body => {
-				if (body.code == 0) {
+				if (body.code === 0) {
+					// Check if has completed all rounds.
+					if (body.data.isEnd) {
+						const resultPath = '/game/result';
+						this.props.history.push(resultPath);
+						return;
+					}
+
+					// Current artwork.
 					this.setState({ isLoading: false, artworkCoverUrl: body.data.artworkCoverUrl });
 				}
 			});
