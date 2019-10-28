@@ -76,4 +76,23 @@ public class Artwork {
     @ManyToMany(mappedBy = "artworks", fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<Game> games = new HashSet<>();
+
+    /**
+     * Get the position string for display.
+     * @return A string contained geographic information for display.
+     */
+    public String getDisplayPosition() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getCity());
+        if(builder.length() > 0 && this.getCounty() != null) {
+            builder.append(", ").append(this.getCounty());
+        }
+        if(builder.length() > 0 && this.getState() != null) {
+            builder.append(", ").append(this.getState());
+        }
+        if(builder.length() > 0 && this.getCountry() != null) {
+            builder.append(", ").append(this.getCountry());
+        }
+        return builder.toString();
+    }
 }
