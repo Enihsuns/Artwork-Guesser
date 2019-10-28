@@ -31,7 +31,7 @@ public class UserController {
     public Map<String, Object> login(@RequestBody Map<String, Object> body, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        // Get username and password parameters.
+        // Get email and password parameters.
         String email = (String) body.getOrDefault(EMAIL_KEY, "");
         String password = (String) body.getOrDefault(PASSWORD_KEY, "");
 
@@ -44,10 +44,34 @@ public class UserController {
         }
 
         // Put user in session.
-        session.setAttribute("user", user);
+        session.setAttribute(USER_KEY, user);
 
         // Success response.
         response.put(CODE_KEY, SUCCESS_CODE);
+        return response;
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public Map<String, Object> signup(@RequestBody Map<String, Object> body, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Get email and password parameters.
+        String email = (String) body.getOrDefault(EMAIL_KEY, "");
+        String password = (String) body.getOrDefault(PASSWORD_KEY, "");
+
+        // Save new user into database.
+        User user = userService.saveUser(email, password);
+        if(user == null) {
+            response.put(CODE_KEY, INVALID_PARAMS_CODE);
+            response.put(MSG_KEY, "Email already exist");
+            return response;
+        }
+
+        // Login after signing up: save user model into session.
+        session.setAttribute(USER_KEY, user);
+
+        // Success response.
+        response.put(CODE_KEY, 0);
         return response;
     }
 }
