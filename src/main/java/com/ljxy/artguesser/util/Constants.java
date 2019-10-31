@@ -13,6 +13,7 @@ public class Constants {
     public static final String DATA_KEY = "data";
     public static final String CODE_KEY = "code";
     public static final String MSG_KEY = "msg";
+    public static final String USER_KEY = "user";
 
     /**
      * Service Code.

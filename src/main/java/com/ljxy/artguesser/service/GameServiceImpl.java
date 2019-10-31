@@ -42,6 +42,6 @@ public class GameServiceImpl implements GameService{
 
         int beginDist = Math.abs(guessTime - artwork.getObjectBeginDate());
         int endDist = Math.abs(guessTime - artwork.getObjectEndDate());
-        return (1 - (Math.min(beginDist, endDist) / MAX_TIME_DIST))*MAX_ROUND_SCORE;
+        return (int)((1.0 - (Math.min(beginDist, endDist) / (double)MAX_TIME_DIST))*MAX_ROUND_SCORE);
     }
 }

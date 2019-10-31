@@ -149,7 +149,6 @@ class Game extends React.Component {
 				if (body.code === 0) {
 					// Check if has completed all rounds.
 					if (body.data.isEnd) {
-						console.log("Yeah");
 						const resultPath = '/game/result';
 						this.props.history.push(resultPath);
 						return;
