@@ -4,6 +4,7 @@ import com.ljxy.artguesser.model.Artwork;
 import com.ljxy.artguesser.model.Game;
 import com.ljxy.artguesser.model.Play;
 import com.ljxy.artguesser.service.GameService;
+import com.ljxy.artguesser.util.ScoreCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -135,7 +136,7 @@ public class GameController {
         Artwork artwork = play.getCurRoundArtwork();
         if(body.containsKey(TIME_GAME_PLAY_KEY)) {
             // Time guess mode.
-            score = gameService.getScore(artwork, guessTime);
+            score = ScoreCalculator.getScore(artwork, guessTime);
         }
 
         // Update the Play model in the session.
