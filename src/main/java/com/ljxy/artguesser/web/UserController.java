@@ -19,8 +19,8 @@ public class UserController {
 
     private final UserService userService;
 
-    private final String EMAIL_KEY = "email";
-    private final String PASSWORD_KEY = "password";
+    private static final String EMAIL_KEY = "email";
+    private static final String PASSWORD_KEY = "password";
 
     @Autowired
     public UserController(UserService userService) {

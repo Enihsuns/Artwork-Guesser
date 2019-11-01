@@ -158,7 +158,7 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    this.initFetch();
+    
   }
 
   render() {
@@ -174,13 +174,6 @@ class Home extends React.Component {
         <popup />
       </React.Fragment>
     );
-  }
-
-  /* Data */
-  initFetch = () => {
-    fetch('/home')
-      .then(response => response.json())
-      .then(body => this.setState({ games: body, isLoading: false }))
   }
 }
 
