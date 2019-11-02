@@ -131,24 +131,25 @@ public class GameController {
 
         // Calculate the score.
         // TODO: The current version is only for testing frontend & backend.
-        int score = 0;
+        double roundScore = 0, roundFullScore = 0;
         int guessTime = (Integer)body.get(TIME_GAME_PLAY_KEY);
         Artwork artwork = play.getCurRoundArtwork();
         if(body.containsKey(TIME_GAME_PLAY_KEY)) {
             // Time guess mode.
-            score = ScoreCalculator.getScore(artwork, guessTime);
+            roundScore = ScoreCalculator.getScore(artwork, guessTime);
+            roundFullScore = ScoreCalculator.getFullScore(artwork);
         }
 
         // Update the Play model in the session.
-        play.setCurRound(play.getCurRound() + 1);
-        play.setScore(play.getScore() + score);
+        play.setNewRound(roundScore, roundFullScore);
         session.setAttribute(PLAY_SESSION_KEY, play);
 
         // Return data including score and other artwork information.
         response.put(CODE_KEY, SUCCESS_CODE);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("score", score);
+        data.put("roundScore", roundScore);
+        data.put("roundFullScore", roundFullScore);
         data.put("guessTime", guessTime);
         data.put("title", artwork.getTitle());
         data.put("objectDate", artwork.getObjectDate());
@@ -162,5 +163,10 @@ public class GameController {
         data.put("artworkCoverUrl", artwork.getCoverUrl());
         response.put(DATA_KEY, data);
         return response;
+    }
+
+    @RequestMapping(value = "/game/result", method = RequestMethod.POST)
+    public Map<String, Object> result(HttpSession session) {
+        return null;
     }
 }
