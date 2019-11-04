@@ -97,10 +97,10 @@ export default function Score(props) {
         <DialogTitle disableTypography className={classes.dialogTitle}>
           <div>
             <Typography variant="h2" component="h2" display="inline" color="secondary">
-              {data.score}
+              {data.roundScore}
             </Typography>
             <Typography variant="h2" component="h2" display="inline">
-              /5000
+              /{data.roundFullScore}
             </Typography>
           </div>
           <div>
