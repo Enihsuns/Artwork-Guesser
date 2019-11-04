@@ -3,7 +3,6 @@ package com.ljxy.artguesser.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -26,7 +25,6 @@ public class Play {
     /**
      * Score and full score of the play.
      */
-    @Getter(AccessLevel.PRIVATE)
     @Setter(AccessLevel.PRIVATE)
     private Double score, fullScore;
 
@@ -70,5 +68,12 @@ public class Play {
         curRound++;
         score += roundScore;
         fullScore += roundFullScore;
+    }
+
+    /**
+     * Call when end the current game play.
+     */
+    public void endPlay() {
+        endTime = new Date();
     }
 }
