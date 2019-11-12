@@ -5,6 +5,7 @@ import Game from '../Game/Game';
 import Result from '../Game/Result';
 import SignIn from '../Login/SignIn'
 import SignUp from '../Login/SignUp'
+import User from '../Login/User'
 
 class App extends React.Component {
 	render() {
@@ -17,7 +18,7 @@ class App extends React.Component {
 						<Route exact path="/game/result" component={Result} />
 						<Route exact path="/login" component={SignIn} />
 						<Route exact path="/signup" component={SignUp} />
-						<Route
+						<Route exact path="/user" component={User}/>
               render={function() {
                 return <p>Not Found</p>;
               }}
