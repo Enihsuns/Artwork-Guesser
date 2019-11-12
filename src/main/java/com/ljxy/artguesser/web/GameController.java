@@ -3,6 +3,7 @@ package com.ljxy.artguesser.web;
 import com.ljxy.artguesser.model.Artwork;
 import com.ljxy.artguesser.model.Game;
 import com.ljxy.artguesser.model.Play;
+import com.ljxy.artguesser.model.User;
 import com.ljxy.artguesser.service.GameService;
 import com.ljxy.artguesser.service.PlayService;
 import com.ljxy.artguesser.util.ScoreCalculator;
@@ -68,7 +69,7 @@ public class GameController {
         // Init a new Play instance and put into the session.
         Play play = new Play();
         play.setGame(game);
-        // TODO: play.setUser();
+        play.setUser((User)session.getAttribute(USER_KEY));
         session.setAttribute(PLAY_SESSION_KEY, play);
 
         // Success.
