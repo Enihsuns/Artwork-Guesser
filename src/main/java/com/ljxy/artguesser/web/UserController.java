@@ -79,7 +79,7 @@ public class UserController {
     }
 
     @RequestMapping("/user")
-    public Map<String, Object> user(@RequestBody Map<String, Object> body, HttpSession session) {
+    public Map<String, Object> user(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
         Object userObject = session.getAttribute(USER_KEY);

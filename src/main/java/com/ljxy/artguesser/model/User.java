@@ -28,7 +28,7 @@ public class User {
     /**
      * All the game plays played by the user.
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Play> plays = new ArrayList<>();
 
