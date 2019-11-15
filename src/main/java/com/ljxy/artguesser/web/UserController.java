@@ -1,6 +1,7 @@
 package com.ljxy.artguesser.web;
 
 import com.ljxy.artguesser.model.User;
+import com.ljxy.artguesser.model.Play;
 import com.ljxy.artguesser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import static com.ljxy.artguesser.util.Constants.*;
 
@@ -73,5 +76,26 @@ public class UserController {
         // Success response.
         response.put(CODE_KEY, 0);
         return response;
+    }
+
+    @RequestMapping("/user")
+    public Map<String, Object> user(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        Object userObject = session.getAttribute(USER_KEY);
+        User user = (User)userObject;
+        List<Play> playList = user.getPlays();
+        List<Object> resultPlayList = new ArrayList<>();
+        for(Play play: playList) {
+            Map<String, Object> resultPlay = new HashMap<>();
+            resultPlay.put("id", play.getId());
+            resultPlay.put("curRound", play.getCurRound());
+            resultPlay.put("score", play.getScore());
+
+            resultPlayList.add(resultPlay);
+        }
+        response.put(DATA_KEY, resultPlayList);
+        return response;
+
     }
 }
