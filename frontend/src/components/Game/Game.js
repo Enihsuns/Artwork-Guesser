@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import Slider from '@material-ui/core/Slider';
 import Footer from '../Common/Footer';
 import ArtAppBar from '../Common/ArtAppBar';
+import TutorialModal from '../Common/TutorialModal';
 import Score from './Score'
 
 const useStyles = makeStyles(theme => ({
@@ -121,6 +122,7 @@ class Game extends React.Component {
 		return (
 			<React.Fragment>
 				<CssBaseline />
+				<TutorialModal />
 				<ArtAppBar />
 				{
 					this.state.isLoading ? null :
