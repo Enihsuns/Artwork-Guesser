@@ -98,4 +98,19 @@ public class UserController {
         return response;
 
     }
+
+    @RequestMapping("/check")
+    public Map<String, Object> userCheck(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        Object userCheck = session.getAttribute(USER_KEY);
+        if(userCheck == null) {
+            response.put(DATA_KEY, null);
+        } else {
+            User user = (User) userCheck;
+            String email = user.getEmail();
+            response.put(DATA_KEY, email);
+        }
+        return response;
+    }
 }
