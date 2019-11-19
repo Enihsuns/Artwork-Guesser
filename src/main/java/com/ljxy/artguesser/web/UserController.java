@@ -105,11 +105,12 @@ public class UserController {
 
         Object userCheck = session.getAttribute(USER_KEY);
         if(userCheck == null) {
-            response.put(DATA_KEY, null);
+            response.put(CODE_KEY, INVALID_USER_CODE);
         } else {
             User user = (User) userCheck;
             String email = user.getEmail();
             response.put(DATA_KEY, email);
+            response.put(CODE_KEY, SUCCESS_CODE);
         }
         return response;
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,26 +25,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const useFetch = (url) => {
-    const [response, setRespnse] = React.useState(null);
-
-    React.useEffect(()=> {
-        const FetchData = async () => {
-            const res = await fetch(url);
-            const json = await res.json();
-            setRespnse(json);
-        };
-        FetchData();
-    },[]);
-    return {response};
-};
 
 export default function ArtAppBar() {
     const classes = useStyles();
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const res = useFetch('/userCheck');
+    const[response, setResponse] = React.useState({});
+
     function handleChange(event) {
         setAuth(event.target.checked);
     }
@@ -57,6 +45,23 @@ export default function ArtAppBar() {
         setAnchorEl(null);
     }
 
+
+
+
+    async function fetchData() {
+        const res = await fetch('/check')
+            const body = res.json();
+            if(body.code === 10003) {
+                const resultPath = '/login';
+                props.history.push(resultPath);
+            } else {
+                setResponse(body.data);
+            }
+    }
+
+    useEffect(() => {
+        fetchData()
+    },[]);
 
 
     return (
