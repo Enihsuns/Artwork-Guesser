@@ -34,7 +34,7 @@ public class Play {
     @Setter(AccessLevel.PRIVATE)
     private int curRound;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
     private Game game;
 

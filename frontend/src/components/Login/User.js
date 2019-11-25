@@ -68,24 +68,65 @@ function PlayList(props) {
 	const classes = useStyles();
 	const plays = props.data;
 
+	const handlePlayClick = (game) => {
+		fetch('/game/start', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				gameId: game.id,
+			})
+		}).then(response => response.json())
+			.then(body => {
+				if (body.code === 0) {
+					const gamePath = 'game';
+					props.history.push(gamePath);
+				}
+			});
+	}
+
 	return (
 		<Container className={classes.cardGrid} maxWidth="md">
-			<Grid container spacing={4}>
-				{plays.map(play => (
-					<Grid item key={play.id} xs={12} sm={6} md={4}>
-						<Card className={classes.card}>
-							<CardContent className={classes.cardContent}>
-								<Typography gutterBottom variant="h5" component="h2">
-									{play.curRound}
-								</Typography>
-								<Typography>
-									{play.score}
-								</Typography>
-							</CardContent>
-						</Card>
-					</Grid>
-				))}
-			</Grid>
+			{plays && (
+				<Grid container spacing={4}>
+					{plays.map(play => (
+						<Grid item key={play.id} xs={12} sm={6} md={4}>
+							<Card className={classes.card}>
+								<CardMedia
+									className={classes.cardMedia}
+									image={play.game.coverUrl}
+									title="Image title"
+								/>
+								<CardContent className={classes.cardContent}>
+									<div>
+										<Typography gutterBottom variant="h5" component="h2">
+											{play.game.title}
+										</Typography>
+										<Typography gutterBottom>
+											{play.game.description}
+										</Typography>
+									</div>
+									<div>
+										<Typography display="inline" variant="subtitle1">Last Play &nbsp;</Typography>
+										<Typography display="inline" color="secondary" variant="subtitle1">{play.score}</Typography>
+										<Typography display="inline" variant="subtitle1">/{play.fullScore}</Typography>
+									</div>
+									<div>
+										<Typography variant="subtitle2">{play.startTime}</Typography>
+									</div>
+								</CardContent>
+								<CardActions>
+									<Button size="small" color="primary" onClick={() => handlePlayClick(play.game)}>
+										Play Again
+                	</Button>
+								</CardActions>
+							</Card>
+						</Grid>
+					))}
+				</Grid>
+			)}
 		</Container>
 	);
 }
@@ -112,7 +153,7 @@ class User extends React.Component {
 				<ArtAppBar history={this.props.history} />
 				<main>
 					<Banner />
-					{this.state.isLoading ? null : <PlayList data={this.state.plays} />}
+					{this.state.isLoading ? null : <PlayList data={this.state.plays} history={this.props.history}/>}
 				</main>
 				<Footer />
 				<popup />
