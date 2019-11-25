@@ -1,7 +1,7 @@
 package com.ljxy.artguesser.web;
 
-import com.ljxy.artguesser.model.User;
 import com.ljxy.artguesser.model.Play;
+import com.ljxy.artguesser.model.User;
 import com.ljxy.artguesser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.ljxy.artguesser.util.Constants.*;
 
@@ -24,6 +25,8 @@ public class UserController {
 
     private static final String EMAIL_KEY = "email";
     private static final String PASSWORD_KEY = "password";
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     public UserController(UserService userService) {
@@ -50,6 +53,14 @@ public class UserController {
         session.setAttribute(USER_KEY, user);
 
         // Success response.
+        response.put(CODE_KEY, SUCCESS_CODE);
+        return response;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Map<String, Object> signOut(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        session.removeAttribute(USER_KEY);
         response.put(CODE_KEY, SUCCESS_CODE);
         return response;
     }
@@ -91,6 +102,15 @@ public class UserController {
             resultPlay.put("id", play.getId());
             resultPlay.put("curRound", play.getCurRound());
             resultPlay.put("score", play.getScore());
+            resultPlay.put("fullScore", play.getFullScore());
+            resultPlay.put("startTime", dateFormat.format(play.getStartTime()));
+
+            Map<String, Object> resultGame = new HashMap<>();
+            resultGame.put("id", play.getGame().getId());
+            resultGame.put("title", play.getGame().getTitle());
+            resultGame.put("description", play.getGame().getDescription());
+            resultGame.put("coverUrl", play.getGame().getCoverUrl());
+            resultPlay.put("game", resultGame);
 
             resultPlayList.add(resultPlay);
         }

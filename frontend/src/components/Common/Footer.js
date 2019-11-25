@@ -12,19 +12,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://material-ui.com/">
-				Your Website
-      </Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 export default function Footer() {
   const classes = useStyles();
 
@@ -36,8 +23,7 @@ export default function Footer() {
 						</Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Jing Li &amp; Xinyu Yang
-						</Typography>
-        <Copyright />
+				</Typography>
       </Container>
     </footer>
   );

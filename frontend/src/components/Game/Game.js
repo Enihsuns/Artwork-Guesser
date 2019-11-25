@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Slider from '@material-ui/core/Slider';
 import Footer from '../Common/Footer';
-import ArtAppBar from '../Common/ArtAppBar';
+import ArtAppBar from '../Common/AppBar';
 import TutorialModal from '../Common/TutorialModal';
 import Score from './Score'
 
@@ -123,7 +123,7 @@ class Game extends React.Component {
 			<React.Fragment>
 				<CssBaseline />
 				<TutorialModal />
-				<ArtAppBar />
+				<ArtAppBar history={this.props.history} />
 				{
 					this.state.isLoading ? null :
 						<GuessRect

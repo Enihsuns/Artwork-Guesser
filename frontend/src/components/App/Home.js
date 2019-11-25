@@ -9,9 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import ArtAppBar from '../Common/ArtAppBar';
+import ArtAppBar from '../Common/AppBar';
 import Footer from '../Common/Footer';
-import AppBar from '../Common/AppBar'
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -135,7 +134,7 @@ class Home extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <ArtAppBar />
+        <ArtAppBar history={this.props.history} />
         <main>
           <Banner />
           {this.state.isLoading ? null : <GameList data={this.state.games} handlePlayClick={this.handlePlayClick}/>}
