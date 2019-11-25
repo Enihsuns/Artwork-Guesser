@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import ArtAppBar from '../Common/ArtAppBar'
+import ArtAppBar from '../Common/AppBar'
 import Footer from '../Common/Footer';
 
 const useStyles = makeStyles(theme => ({
@@ -70,7 +70,7 @@ export default class Result extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <ArtAppBar />
+        <ArtAppBar history={this.props.history} s/>
         {this.state.isLoading ? null : <ScoreRect data={this.state.data} />}
         <Footer />
       </React.Fragment>

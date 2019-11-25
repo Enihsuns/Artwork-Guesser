@@ -54,6 +54,14 @@ public class UserController {
         return response;
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Map<String, Object> signOut(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        session.removeAttribute(USER_KEY);
+        response.put(CODE_KEY, SUCCESS_CODE);
+        return response;
+    }
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public Map<String, Object> signup(@RequestBody Map<String, Object> body, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
