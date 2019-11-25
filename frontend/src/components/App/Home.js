@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import ArtAppBar from '../Common/ArtAppBar';
 import Footer from '../Common/Footer';
+import AppBar from '../Common/AppBar'
 
 const useStyles = makeStyles(theme => ({
   icon: {

@@ -21,4 +21,6 @@ public class Constants {
     public static final int SUCCESS_CODE = 0;
     public static final int INVALID_PARAMS_CODE = 10001;
     public static final int DATABASE_SEARCH_FAILED_CODE = 10002;
+    public static final int INVALID_USER_CODE = 10003;
+
 }
