@@ -63,6 +63,11 @@ export default function ArtAppBar(props) {
 		props.history.push(item.path);
 	}
 
+	function handleTitleClick() {
+		const homePath = '/';
+		props.history.push(homePath);
+	}
+
 	async function fetchData() {
 		fetch('/check', {
 			method: 'POST',
@@ -90,7 +95,13 @@ export default function ArtAppBar(props) {
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Toolbar>
-					<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+					<IconButton
+						edge="start"
+						className={classes.menuButton}
+						color="inherit"
+						aria-label="menu"
+						onClick={handleTitleClick}
+					>
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" className={classes.title}>

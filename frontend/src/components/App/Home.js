@@ -58,20 +58,6 @@ function Banner() {
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
           How Well Do You Know Art History?
             </Typography>
-        <div className={classes.heroButtons}>
-          <Grid container spacing={2} justify="center">
-            <Grid item>
-              <Button variant="contained" color="primary">
-                Main call to action
-                  </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="outlined" color="primary">
-                Secondary action
-                  </Button>
-            </Grid>
-          </Grid>
-        </div>
       </Container>
     </div>
   );
@@ -115,9 +101,9 @@ function GameList(props) {
 }
 
 class Home extends React.Component {
-  constructor (props){
+  constructor(props) {
     super(props);
-  
+
     this.state = {
       isLoading: true,
       games: []
@@ -137,7 +123,7 @@ class Home extends React.Component {
         <ArtAppBar history={this.props.history} />
         <main>
           <Banner />
-          {this.state.isLoading ? null : <GameList data={this.state.games} handlePlayClick={this.handlePlayClick}/>}
+          {this.state.isLoading ? null : <GameList data={this.state.games} handlePlayClick={this.handlePlayClick} />}
         </main>
         <Footer />
         <popup />
